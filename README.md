@@ -1,5 +1,5 @@
 # PNGQuantDatePreservation
- Preserve original creation date when using PNGQuant
+ Preserve original creation date when using PNGQuant - [GH Link](https://github.com/ReessKennedy/Compression-Enhancer)
 
 ## What ⚡
 Adds date preservation to the popular PNG QUANT compression algorithm when running on a mac. 
@@ -12,3 +12,22 @@ I should use Alfred or some automatter to improve this.
 ## To Dos 💡
 #### Compatibility
 I did this quickly to work for me on my Mac but could be extended to work for more people in various environments. Not sure whether suing Stet or Touch is more universal ... would need to look into this and test. 
+
+
+## Changelog
+
+### 2024-05-02 
+#### Fixing date update
+Something broke with SetFile command after upgrading to Ventura. The error I got is as follows: 
+
+```
+me@mymachine ~ % SetFile 
+xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcr
+```
+
+Solved by doing the following.
+1. Completely remove command line tools using this kind of dangerous method: `sudo rm -rf /Library/Developer/CommandLineTools`
+2. Reinstall it - `sudo xcode-select --install`
+Other standard ways to uninstall and reinstall did not work. 
+
+
