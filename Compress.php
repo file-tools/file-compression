@@ -29,7 +29,7 @@ function normalizeFilePath($path)
 
 
 // Function to update the creation and modification date of a file
-function updateFileCreationDate($filePath, $newCreationDate)
+function updateFileCreationDateSet($filePath, $newCreationDate)
 {
     // Parse the input date string and convert it to a timestamp
     $timestamp = strtotime($newCreationDate);
@@ -63,6 +63,37 @@ function updateFileCreationDate($filePath, $newCreationDate)
 
     return $result;
 }
+
+
+function updateFileCreationDate($filePath, $newCreationDate)
+{
+    // Parse the input date string and convert it to a timestamp
+    $timestamp = strtotime($newCreationDate);
+
+    // Check if the timestamp is valid (not equal to false)
+    if ($timestamp === false) {
+        // Date is not properly formatted
+        $result = "❌ Inputted time string not properly formatted.";
+    } else {
+        // Set the modification time of the file
+        if (touch($filePath, $timestamp)) {
+            // Success
+            $formattedDate = date('m/d/y H:i:s', $timestamp); // Format as 'MM/DD/YY HH:MM:SS'
+            $result = "✅ Success! Modification time updated to {$formattedDate}";
+
+            // On macOS, directly modifying creation time is not supported.
+            // We can only update the modification time using touch.
+            // If you need to change the creation time, you may need to use more advanced file system manipulation techniques.
+        } else {
+            // Failed to update modification time
+            $result = "❌ Failed to update modification time.";
+        }
+    }
+
+    return $result;
+}
+
+
 
 // Function to run PNGQuant on an image file with customizable arguments
 function runPngQuant($inputPath, $arguments = '')
@@ -117,10 +148,10 @@ function processPNGFiles($directory)
 
 include("config.php");
 
-$inputDirectory = normalizeFilePath($inputDirectory);
+$directory = normalizeFilePath($inputDirectory);
 
 // Process PNG files and update creation dates using the functions from PngQuant.php
-processPNGFiles($inputDirectory);
+processPNGFiles($directory);
 
 echo "PNGQuant processing and creation date update completed.\n";
 
