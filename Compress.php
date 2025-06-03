@@ -107,7 +107,7 @@ function runPngQuant($inputPath, $arguments = '')
 
 
 // Function to process PNG files in a directory
-function processPNGFiles($directory)
+function processPNGFiles($directory, $pngquantArgs = '')
 {
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
     
@@ -130,8 +130,8 @@ function processPNGFiles($directory)
 
                 echo "Original Creation Timestamp: $formattedDate\n";
                 
-                // Run PNGQuant on the PNG image with customizable arguments
-                runPngQuant($normalizedPath, '--quality=60-80 --skip-if-larger --ext=.png --force');
+                // Run PNGQuant on the PNG image with configurable arguments
+                runPngQuant($normalizedPath, $pngquantArgs);
                 
                 // Update the creation date of the file
                 echo updateFileCreationDate($normalizedPath, $formattedDate);
@@ -146,12 +146,23 @@ function processPNGFiles($directory)
     }
 }
 
-include("config.php");
+// Read configuration from INI file
+$config = parse_ini_file('config.ini');
+if ($config === false) {
+    die("Error: Unable to parse config.ini file.\n");
+}
+
+$inputDirectory = $config['file_directory'] ?? '';
+if (empty($inputDirectory)) {
+    die("Error: file_directory not specified in config.ini file.\n");
+}
+
+$pngquantArguments = $config['pngquant_arguments'] ?? '--quality=60-80 --skip-if-larger --ext=.png --force';
 
 $directory = normalizeFilePath($inputDirectory);
 
 // Process PNG files and update creation dates using the functions from PngQuant.php
-processPNGFiles($directory);
+processPNGFiles($directory, $pngquantArguments);
 
 echo "PNGQuant processing and creation date update completed.\n";
 
