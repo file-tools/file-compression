@@ -1,3 +1,6 @@
+# PNGQuantDatePreservation
+ Preserve original creation date when using PNGQuant
+
 ## What ⚡
 Adds date preservation to the popular PNG QUANT compression algorithm when running on a Mac. 
 
@@ -15,6 +18,8 @@ I should use Alfred or some automatter to improve this.
 ## To Dos 💡
 #### Compatibility
 I did this quickly to work for me on my Mac but could be extended to work for more people in various environments. Not sure whether suing Stet or Touch is more universal ... would need to look into this and test. 
+
+
 
 ## Changelog
 
