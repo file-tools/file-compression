@@ -113,7 +113,7 @@ function processFiles($directory, $libMogrify, $libPngquant, $timeCommand = 'Set
                 }
                 
                 echo "---\n";
-                echo "Starting $relativePath\n";
+                echo "🧾 $relativePath\n";
 
                 // Get the original creation timestamp of the file
                 $originalCreationTimestamp = getCreationTimestamp($normalizedPath);
