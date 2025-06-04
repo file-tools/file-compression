@@ -1,4 +1,4 @@
-# PNGQuantDatePreservation
+# Screenshot Compression (with Date Preservation!)
  Preserve original creation date when using PNGQuant
 
 ## What ⚡
