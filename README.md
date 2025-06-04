@@ -48,7 +48,8 @@ I also use a tool called ImageOptim
 - I could use Alfred or some automatter to improve this
 - Plist files can also be set as services that automate this if you keep a dedicated Screenshots folder as well and wish to just compress files righy away, when you capture them. 
 - More testing - really only testing this on MacOS but thing it should work on Linux or Ubuntu if time_command is changed
-
+- Perhaps should be renamed from "image-compression" to "image-transformer" given additional of mogrify gives you ability to do much more than just compress an image? 
+- 
 ## Changelog
 
 ### 2025-06-03
