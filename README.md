@@ -5,13 +5,13 @@ An easy-to-configure wrapper for PNG image compression (using powerful PngQuant 
 
 ## Why 🤷‍♂️
 Date preservation:
-    - Running many command line tools will reset a file's creation date to date script is run
-    - I really like preserving this important piece of meta data
-    - It's especially nice to preseve this if you have years of screenhots you wish to compress but want to remember the year you captured those images
+- Running many command line tools will reset a file's creation date to date script is run
+- I really like preserving this important piece of meta data
+- It's especially nice to preseve this if you have years of screenhots you wish to compress but want to remember the year you captured those images
 
 Helpers provide guardrails:
-    - Can be hard to remember commands for libraries like PngQuant that don't have a UI
-    - Wrappers like this can help by augmenting functionality and with reminders around configuration 
+  - Can be hard to remember commands for libraries like PngQuant that don't have a UI
+  - Wrappers like this can help by augmenting functionality and with reminders around configuration 
 
 ## How 📋
 
@@ -39,6 +39,9 @@ Windows: Download from [pngquant.org](https://pngquant.org/)
 For MacOS usage, this script also requires Xcode Command Line Tools for the SetFile command:
 
 macOS: `xcode-select --install`
+
+## Additional Compression Tools
+I also use a tool called ImageOptim
 
 
 ## Ideas / ToDos

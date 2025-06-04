@@ -80,8 +80,8 @@ function updateFileCreationDatetime($filePath, $newCreationDate, $timeCommand = 
 }
 
 
-// Function to run PNGQuant on an image file with customizable arguments
-function runPngQuant($inputPath, $arguments = '')
+// Function to run library command on an image file with customizable arguments
+function runLibrarySettings($inputPath, $arguments = '')
 {
     $inputPath = '"' . $inputPath . '"';
     $command = "pngquant $arguments $inputPath";
@@ -91,8 +91,8 @@ function runPngQuant($inputPath, $arguments = '')
 
 
 
-// Function to process PNG files in a directory
-function processPNGFiles($directory, $pngquantArgs = '', $timeCommand = 'SetFile')
+// Function to process files in a directory
+function processFiles($directory, $pngquantArgs = '', $timeCommand = 'SetFile')
 {
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
     
@@ -115,8 +115,8 @@ function processPNGFiles($directory, $pngquantArgs = '', $timeCommand = 'SetFile
 
                 echo "Original Creation Timestamp: $formattedDate\n";
                 
-                // Run PNGQuant on the PNG image with configurable arguments
-                runPngQuant($normalizedPath, $pngquantArgs);
+                // Run library command on the image with configurable arguments
+                runLibrarySettings($normalizedPath, $pngquantArgs);
                 
                 // Update the creation date of the file
                 echo updateFileCreationDatetime($normalizedPath, $formattedDate, $timeCommand);
@@ -147,8 +147,8 @@ $timeCommand = $config['time_command'] ?? 'SetFile';
 
 $directory = normalizeFilePath($inputDirectory);
 
-// Process PNG files and update creation dates using the functions from PngQuant.php
-processPNGFiles($directory, $pngquantArguments, $timeCommand);
+// Process files and update creation dates using the functions
+processFiles($directory, $pngquantArguments, $timeCommand);
 
-echo "PNGQuant processing and creation date update completed.\n";
+echo "Library processing and creation date update completed.\n";
 
