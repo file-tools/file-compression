@@ -81,18 +81,17 @@ function updateFileCreationDatetime($filePath, $newCreationDate, $timeCommand = 
 
 
 // Function to run library command on an image file with customizable arguments
-function runLibrarySettings($inputPath, $arguments = '')
+function runLibrarySettings($inputPath, $libCommand)
 {
     $inputPath = '"' . $inputPath . '"';
-    $command = "pngquant $arguments $inputPath";
+    $command = "$libCommand $inputPath";
     exec($command);
-    echo "Processed: $inputPath\n";
 }
 
 
 
 // Function to process files in a directory
-function processFiles($directory, $pngquantArgs = '', $timeCommand = 'SetFile')
+function processFiles($directory, $libMogrify, $libPngquant, $timeCommand = 'SetFile')
 {
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
     
@@ -102,30 +101,48 @@ function processFiles($directory, $pngquantArgs = '', $timeCommand = 'SetFile')
             $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
             
             if (in_array(strtolower($fileExtension), $allowedExtensions)) {
-                // Get the original creation timestamp of the file
-
-                  // Normalize and sanitize the file path
+                // Normalize and sanitize the file path
                 $normalizedPath = normalizeFilePath($file->getPathname());
-
-                $originalCreationTimestamp = getCreationTimestamp($normalizedPath);
-
-                $formattedDate = date('Y-m-d H:i:s', $originalCreationTimestamp);
-
-                // $originalCreationTimestamp = 1439095112;
-
-                echo "Original Creation Timestamp: $formattedDate\n";
                 
-                // Run library command on the image with configurable arguments
-                runLibrarySettings($normalizedPath, $pngquantArgs);
+                // Calculate relative path from starting directory
+                $relativePath = str_replace($directory . '/', '', $normalizedPath);
+                if ($relativePath === $normalizedPath) {
+                    // If no directory separator found, try without trailing slash
+                    $relativePath = str_replace($directory, '', $normalizedPath);
+                    $relativePath = ltrim($relativePath, '/');
+                }
+                
+                echo "---\n";
+                echo "Starting $relativePath\n";
+
+                // Get the original creation timestamp of the file
+                $originalCreationTimestamp = getCreationTimestamp($normalizedPath);
+                $formattedDate = date('Y-m-d H:i:s', $originalCreationTimestamp);
+                
+                echo "- reading creation date = $formattedDate\n";
+                
+                // Run mogrify command first if set (for watermarking)
+                if (!empty($libMogrify)) {
+                    echo "- applying lib_mogrify\n";
+                    runLibrarySettings($normalizedPath, $libMogrify);
+                }
+                
+                // Run pngquant command if set (for compression)
+                if (!empty($libPngquant)) {
+                    echo "- applying lib_pngquant\n";
+                    runLibrarySettings($normalizedPath, $libPngquant);
+                }
                 
                 // Update the creation date of the file
-                echo updateFileCreationDatetime($normalizedPath, $formattedDate, $timeCommand);
-
-
-                echo "Original Creation Timestamp: $formattedDate\n";
-                echo "------\n------\n";
-
-
+                echo "- reapplying creation date\n";
+                $result = updateFileCreationDatetime($normalizedPath, $formattedDate, $timeCommand);
+                
+                // Check if the result indicates success
+                if (strpos($result, '✅') !== false) {
+                    echo "- ✅ Success!\n";
+                } else {
+                    echo "- ❌ Error: $result\n";
+                }
             }
         }
     }
@@ -142,13 +159,14 @@ if (empty($inputDirectory)) {
     die("Error: file_directory not specified in config.ini file.\n");
 }
 
-$pngquantArguments = $config['pngquant_arguments'] ?? '--quality=60-80 --skip-if-larger --ext=.png --force';
+$libMogrify = $config['lib_mogrify'] ?? '';
+$libPngquant = $config['lib_pngquant'] ?? '';
 $timeCommand = $config['time_command'] ?? 'SetFile';
 
 $directory = normalizeFilePath($inputDirectory);
 
 // Process files and update creation dates using the functions
-processFiles($directory, $pngquantArguments, $timeCommand);
+processFiles($directory, $libMogrify, $libPngquant, $timeCommand);
 
 echo "Library processing and creation date update completed.\n";
 
