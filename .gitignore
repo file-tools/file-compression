@@ -1,0 +1,6 @@
+# Ignore all hidden folders and files
+.*
+
+# But allow .gitignore to be tracked
+!.gitignore
+config.ini
