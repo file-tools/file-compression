@@ -9,13 +9,23 @@ Keeping creation dates is important to me and it is annoying that when PNG Quant
 
 ## How 📋
 I just have a folder I save screenshots to and then I set the Config file of this script to the path of that folder and then I manually run this script at the end of each day to compress the files I've save as I review them and see which I need and which I can delete. 
-
 IMPORTANT NOTE:
 - This only touches PNG files so you can run it across a mixed fils system and it will only compress PNG
 
 I should use Alfred or some automatter to improve this. 
 
-## To Dos 💡
+## Requirements 📦
+This script requires installation of PNGQuant on your system:
+
+macOS: `brew install pngquant`
+Ubuntu/Debian: `sudo apt-get install pngquant`
+Windows: Download from [pngquant.org](https://pngquant.org/)
+
+For MacOS usage, this script also requires Xcode Command Line Tools for the SetFile command:
+
+macOS: `xcode-select --install`
+
+## To Dos 
 #### Compatibility
 I did this quickly to work for me on my Mac but could be extended to work for more people in various environments. Not sure whether suing Stet or Touch is more universal ... would need to look into this and test. 
 
